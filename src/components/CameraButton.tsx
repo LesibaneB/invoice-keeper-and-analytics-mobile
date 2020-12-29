@@ -12,7 +12,7 @@ export function CameraButton(props: Props): JSX.Element {
         <View style={styles.innerCircle} />
       </TouchableOpacity>
     </View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
