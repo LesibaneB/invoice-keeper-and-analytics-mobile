@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "229676303132",
+    "project_id": "invoice-scanner-and-anal-2872e",
+    "storage_bucket": "invoice-scanner-and-anal-2872e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:229676303132:android:f18771ea749bd0f6e3b0d9",
+        "android_client_info": {
+          "package_name": "com.invoicekeeperandanalyticsmobile"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "229676303132-juhnv8ve504hkgtpqn2ab2lkopi0tfpm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBEEDtnOcNWABu2ZnB5lSi3RNFbaxbdAJM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "229676303132-juhnv8ve504hkgtpqn2ab2lkopi0tfpm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
