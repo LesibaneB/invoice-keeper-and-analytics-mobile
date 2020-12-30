@@ -1,10 +1,11 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react'
 import {Button, Container, Text} from 'native-base'
 import {StackNavigationProp} from '@react-navigation/stack'
 import {RouteProp} from '@react-navigation/native'
 import {Image, StyleSheet} from 'react-native'
-
 import {RootStackParamList} from '../../../App'
+import ml from '@react-native-firebase/ml'
+import analyzeInvoiceEntities from '../../api/invoice-processing';
 
 type PreviewInvoiceNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -23,12 +24,22 @@ export function PreviewInvoice ({navigation, route} : Props): JSX.Element {
 
   useEffect(() => {
     setImageUri(route.params.imageUri)
-    const date = new Date().toISOString().split('T')[0];
-    const time = new Date().toISOString().split('T')[1].split('.')[0];
+    const date = new Date().toISOString().split('T')[0]
+    const time = new Date().toISOString().split('T')[1].split('.')[0]
     navigation.setOptions({
       title: `${date} ${time}`,
-    });
+    })
   }, [])
+
+  async function processInvoiceData(): Promise<void> {
+    const processed = await ml().cloudDocumentTextRecognizerProcessImage(
+      imageUri,
+    )
+
+    console.log('Found text in document: ', processed.text)
+    const result = await analyzeInvoiceEntities(processed.text)
+    console.log('result : ', result)
+  }
 
   if (!imageUri) {
     return <Container />
@@ -45,7 +56,7 @@ export function PreviewInvoice ({navigation, route} : Props): JSX.Element {
           flex: 1,
         }}
       />
-      <Button block style={styles.processInvoiceButton}>
+      <Button block style={styles.processInvoiceButton} onPress={processInvoiceData}>
         <Text>Process Invoice</Text>
       </Button>
     </Container>
