@@ -1,11 +1,14 @@
 import React, {useEffect, useState} from 'react'
-import {Button, Container, Text} from 'native-base'
+import {Button, Container, Content, Text} from 'native-base';
 import {StackNavigationProp} from '@react-navigation/stack'
 import {RouteProp} from '@react-navigation/native'
 import {Image, StyleSheet} from 'react-native'
 import {RootStackParamList} from '../../../App'
 import ml from '@react-native-firebase/ml'
-import analyzeInvoiceEntities from '../../api/invoice-processing';
+import analyzeInvoiceEntities from '../../api/invoice-processing'
+import {
+  heightPercentageToDP,
+} from 'react-native-responsive-screen'
 
 type PreviewInvoiceNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -46,19 +49,24 @@ export function PreviewInvoice ({navigation, route} : Props): JSX.Element {
   }
 
   return (
-    <Container
-      style={{
-        flex: 1,
-      }}>
-      <Image
-        source={{uri: imageUri}}
+    <Container>
+      <Content
         style={{
           flex: 1,
-        }}
-      />
-      <Button block style={styles.processInvoiceButton} onPress={processInvoiceData}>
-        <Text>Process Invoice</Text>
-      </Button>
+        }}>
+        <Image
+          style={{
+            height: heightPercentageToDP(87.1),
+          }}
+          source={{uri: imageUri}}
+        />
+        <Button
+          block
+          style={styles.processInvoiceButton}
+          onPress={processInvoiceData}>
+          <Text>Process Invoice</Text>
+        </Button>
+      </Content>
     </Container>
   )
 }
