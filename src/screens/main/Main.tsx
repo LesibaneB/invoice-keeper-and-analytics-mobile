@@ -3,6 +3,7 @@ import {Button, Container, Content, Text} from 'native-base'
 import {StyleSheet} from 'react-native'
 import {StackNavigationProp} from '@react-navigation/stack'
 import {RootStackParamList} from '../../../App'
+import {heightPercentageToDP} from 'react-native-responsive-screen'
 
 type MainScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Main'>
 
@@ -37,7 +38,7 @@ export default function Main({navigation}: Props): JSX.Element {
 
 const styles = StyleSheet.create({
   scanInvoiceButton: {
-    marginTop: 650,
+    marginTop: heightPercentageToDP(94.2),
     backgroundColor: '#78ed68',
   },
 })
