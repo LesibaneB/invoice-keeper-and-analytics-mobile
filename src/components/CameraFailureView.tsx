@@ -5,7 +5,7 @@ interface Props {
   onRequestCameraPermissions: () => Promise<void>
 }
 
-export function CameraFailureView(props: Props): JSX.Element {
+export function CameraFailureView({ onRequestCameraPermissions }: Props): JSX.Element {
   return (
     <Container>
       <Content>
@@ -18,7 +18,7 @@ export function CameraFailureView(props: Props): JSX.Element {
           Camera permissions required.
         </Text>
         <Button
-          onPress={props.onRequestCameraPermissions}
+          onPress={onRequestCameraPermissions}
           transparent
           block
           style={{marginTop: 10}}>

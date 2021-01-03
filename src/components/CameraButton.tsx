@@ -1,14 +1,18 @@
-import {StyleSheet, TouchableOpacity, View} from 'react-native'
 import React from 'react'
+import {StyleSheet, TouchableOpacity, View} from 'react-native'
+import {
+  heightPercentageToDP,
+  widthPercentageToDP,
+} from 'react-native-responsive-screen'
 
 interface Props {
   onPress: () => void
 }
 
-export function CameraButton(props: Props): JSX.Element {
+export function CameraButton({onPress}: Props): JSX.Element {
   return (
     <View style={styles.buttonRing}>
-      <TouchableOpacity onPress={props.onPress}>
+      <TouchableOpacity onPress={onPress}>
         <View style={styles.innerCircle} />
       </TouchableOpacity>
     </View>
@@ -26,15 +30,15 @@ const styles = StyleSheet.create({
     borderLeftColor: 'white',
     borderTopColor: 'white',
     borderBottomColor: 'white',
-    height: 100,
-    width: 100,
-    marginTop: 480,
+    height: heightPercentageToDP(13),
+    width: widthPercentageToDP(26),
+    marginTop: heightPercentageToDP(70),
     alignSelf: 'center',
   },
   innerCircle: {
     backgroundColor: 'white',
-    height: 80,
-    width: 80,
+    height: heightPercentageToDP(10.5),
+    width: widthPercentageToDP(21),
     marginTop: 5,
     borderRadius: 50,
     alignSelf: 'center',
