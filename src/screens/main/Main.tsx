@@ -1,19 +1,19 @@
-import React from 'react'
-import {Button, Container, Content, Text} from 'native-base'
-import {StyleSheet} from 'react-native'
-import {StackNavigationProp} from '@react-navigation/stack'
-import {RootStackParamList} from '../../../App'
-import {heightPercentageToDP} from 'react-native-responsive-screen'
+import React from 'react';
+import {Button, Container, Content, Text} from 'native-base';
+import {StyleSheet} from 'react-native';
+import {StackNavigationProp} from '@react-navigation/stack';
+import {RootStackParamList} from '../../../App';
+import { responsiveHeight } from 'react-native-responsive-dimensions';
 
-type MainScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Main'>
+type MainScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Main'>;
 
 interface Props {
-  navigation: MainScreenNavigationProp
+  navigation: MainScreenNavigationProp;
 }
 
 export default function Main({navigation}: Props): JSX.Element {
   function navigateToScanInvoiceScreen(): void {
-    navigation.navigate('ScanInvoice')
+    navigation.navigate('ScanInvoice');
   }
 
   return (
@@ -38,7 +38,7 @@ export default function Main({navigation}: Props): JSX.Element {
 
 const styles = StyleSheet.create({
   scanInvoiceButton: {
-    marginTop: heightPercentageToDP(94.2),
+    marginTop: responsiveHeight(94.2),
     backgroundColor: '#78ed68',
   },
-})
+});

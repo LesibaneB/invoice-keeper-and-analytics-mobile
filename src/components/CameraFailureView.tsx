@@ -1,11 +1,13 @@
-import {Button, Container, Content, Text} from 'native-base'
-import React from 'react'
+import {Button, Container, Content, Text} from 'native-base';
+import React from 'react';
 
 interface Props {
-  onRequestCameraPermissions: () => Promise<void>
+  onRequestCameraPermissions: () => Promise<void>;
 }
 
-export function CameraFailureView({ onRequestCameraPermissions }: Props): JSX.Element {
+export function CameraFailureView({
+  onRequestCameraPermissions,
+}: Props): JSX.Element {
   return (
     <Container>
       <Content>
@@ -26,5 +28,5 @@ export function CameraFailureView({ onRequestCameraPermissions }: Props): JSX.El
         </Button>
       </Content>
     </Container>
-  )
+  );
 }
