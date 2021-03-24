@@ -1,26 +1,27 @@
-import React from 'react'
-import {StackNavigationProp} from '@react-navigation/stack'
-import {RootStackParamList} from '../../../App'
-import {StyleSheet} from 'react-native'
-import {Icon} from 'native-base'
-import {RNCamera} from 'react-native-camera'
-import {CameraButton} from '../../components/CameraButton'
+import React from 'react';
+import {StackNavigationProp} from '@react-navigation/stack';
+import {RootStackParamList} from '../../../App';
+import {StyleSheet} from 'react-native';
+import {Icon} from 'native-base';
+import {RNCamera} from 'react-native-camera';
+import {CameraButton} from '../../components/CameraButton';
 import {
-  heightPercentageToDP,
-  widthPercentageToDP,
-} from 'react-native-responsive-screen'
+  responsiveFontSize,
+  responsiveHeight,
+  responsiveWidth,
+} from 'react-native-responsive-dimensions';
 
 type ScanInvoiceNavigationProp = StackNavigationProp<
   RootStackParamList,
   'ScanInvoice'
->
+>;
 
 interface Props {
-  navigation: ScanInvoiceNavigationProp
+  navigation: ScanInvoiceNavigationProp;
 }
 
-export default function ScanInvoice({ navigation }: Props): JSX.Element {
-  let camera: any
+export default function ScanInvoice({navigation}: Props): JSX.Element {
+  let camera: any;
 
   async function scanInvoice(): Promise<void> {
     try {
@@ -31,18 +32,18 @@ export default function ScanInvoice({ navigation }: Props): JSX.Element {
         navigation.navigate('PreviewInvoice', {imageUri: data.uri});
       }
     } catch (e) {
-      console.log('error result : ', e)
+      console.log('error result : ', e);
     }
   }
 
   function goBackToMainScreen(): void {
-    navigation.goBack()
+    navigation.goBack();
   }
 
   return (
     <RNCamera
       ref={(ref) => {
-        camera = ref
+        camera = ref;
       }}
       style={{
         flex: 1,
@@ -65,15 +66,15 @@ export default function ScanInvoice({ navigation }: Props): JSX.Element {
       />
       <CameraButton onPress={scanInvoice} />
     </RNCamera>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
   closeButton: {
-    marginTop: heightPercentageToDP(5),
+    marginTop: responsiveHeight(5),
     alignSelf: 'flex-end',
-    marginRight: widthPercentageToDP(8),
-    fontSize: heightPercentageToDP(5),
+    marginRight: responsiveWidth(8),
+    fontSize: responsiveFontSize(5),
     color: 'white',
   },
-})
+});

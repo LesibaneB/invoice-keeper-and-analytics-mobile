@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios from 'axios';
 import { EntitiesResult } from '../models/EntitiesResult';
 
 export default async function analyzeInvoiceEntities(
@@ -9,7 +9,7 @@ export default async function analyzeInvoiceEntities(
     {
       invoiceText,
     },
-  )
+  );
 
-  return response.data
+  return response?.data || {};
 }
