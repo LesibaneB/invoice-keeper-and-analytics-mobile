@@ -1,4 +1,4 @@
-import {StackNavigationProp} from '@react-navigation/stack';
+import React from 'react';
 import {
   Button,
   Container,
@@ -8,8 +8,9 @@ import {
   Item,
   Text,
   View,
+  Toast,
 } from 'native-base';
-import React from 'react';
+import {StackNavigationProp} from '@react-navigation/stack';
 import {Controller, useForm} from 'react-hook-form';
 import {StyleSheet} from 'react-native';
 import {
@@ -26,6 +27,7 @@ import {
   PASSWORD_LENGTH_NOT_VALID,
 } from '../../utils/messages';
 import Logo from '../../images/Invoice Scanner Logo.svg';
+import signIn from '../../api/auth';
 
 type SignInNavigationProp = StackNavigationProp<RootStackParamList, 'SignIn'>;
 
@@ -43,13 +45,25 @@ const schema = yup.object().shape({
   password: yup.string().min(6, PASSWORD_LENGTH_NOT_VALID),
 });
 
-export function SignIn({}: Props): JSX.Element {
+export function SignIn({navigation}: Props): JSX.Element {
   const {control, handleSubmit, errors} = useForm<FormData>({
     resolver: yupResolver(schema),
   });
 
-  function submit(data: FormData) {
-    console.log(data);
+  async function submit(data: FormData) {
+    const {email, password} = data;
+    try {
+      await signIn(email, password);
+    } catch (error) {
+      console.log('error', error);
+      Toast.show({
+        text: error?.message || 'Hello',
+        buttonText: 'Okay',
+        duration: 5000,
+        position: 'bottom',
+        type: 'danger',
+      });
+    }
   }
 
   function navigateToForgotPassword() {
@@ -113,6 +127,7 @@ export function SignIn({}: Props): JSX.Element {
             Forgot password?
           </Text>
           <Button
+            testID="signInButton"
             block
             style={styles.signInButton}
             onPress={handleSubmit(submit)}>
