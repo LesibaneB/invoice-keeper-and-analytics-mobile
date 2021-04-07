@@ -27,17 +27,13 @@ import {
   PASSWORD_LENGTH_NOT_VALID,
 } from '../../utils/messages';
 import Logo from '../../images/Invoice Scanner Logo.svg';
-import signIn from '../../api/auth';
+import {SignInData} from '../../models/SignIn';
+import {signIn} from '../../api/auth';
 
 type SignInNavigationProp = StackNavigationProp<RootStackParamList, 'SignIn'>;
 
 interface Props {
   navigation: SignInNavigationProp;
-}
-
-interface FormData {
-  email: string;
-  password: string;
 }
 
 const schema = yup.object().shape({
@@ -46,18 +42,16 @@ const schema = yup.object().shape({
 });
 
 export function SignIn({navigation}: Props): JSX.Element {
-  const {control, handleSubmit, errors} = useForm<FormData>({
+  const {control, handleSubmit, errors} = useForm<SignInData>({
     resolver: yupResolver(schema),
   });
 
-  async function submit(data: FormData) {
-    const {email, password} = data;
+  async function submit(data: SignInData) {
     try {
-      await signIn(email, password);
+      await signIn(data);
     } catch (error) {
-      console.log('error', error);
       Toast.show({
-        text: error?.message || 'Hello',
+        text: error.message,
         buttonText: 'Okay',
         duration: 5000,
         position: 'bottom',
@@ -71,7 +65,7 @@ export function SignIn({navigation}: Props): JSX.Element {
   }
 
   function navigateToSignUp() {
-    console.log('Push to Sign Up.');
+    navigation.navigate('SignUp');
   }
 
   return (
@@ -127,7 +121,6 @@ export function SignIn({navigation}: Props): JSX.Element {
             Forgot password?
           </Text>
           <Button
-            testID="signInButton"
             block
             style={styles.signInButton}
             onPress={handleSubmit(submit)}>
