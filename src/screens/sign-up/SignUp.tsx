@@ -10,14 +10,14 @@ import {
   View,
 } from 'native-base';
 import React from 'react';
-import {Controller, useForm} from 'react-hook-form';
-import {StyleSheet} from 'react-native';
+import { Controller, useForm } from 'react-hook-form';
+import { StyleSheet } from 'react-native';
 import {
   responsiveFontSize,
   responsiveHeight,
   responsiveWidth,
 } from 'react-native-responsive-dimensions';
-import {InputError} from '../../components/InputError';
+import { InputError } from '../../components/InputError';
 import Logo from '../../images/Invoice Scanner Logo.svg';
 import {
   EMAIL_FORMAT_NOT_VALID,
@@ -25,11 +25,11 @@ import {
   PASSWORD_LENGTH_NOT_VALID,
 } from '../../utils/messages';
 import * as yup from 'yup';
-import {yupResolver} from '@hookform/resolvers/yup';
-import {StackNavigationProp} from '@react-navigation/stack';
-import {RootStackParamList} from '../../../App';
-import {SignUpData} from '../../models/SignUp';
-import {signUp} from '../../api/auth';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from '../../../App';
+import { SignUpData } from '../../models/SignUp';
+import { signUp } from '../../api/auth';
 
 type SignUpNavigationProp = StackNavigationProp<RootStackParamList, 'SignUp'>;
 
@@ -48,8 +48,8 @@ const schema = yup.object().shape({
     .min(6, PASSWORD_LENGTH_NOT_VALID),
 });
 
-export function SignUp({navigation}: Props): JSX.Element {
-  const {control, handleSubmit, errors} = useForm<SignUpData>({
+export function SignUp({ navigation }: Props): JSX.Element {
+  const { control, handleSubmit, errors } = useForm<SignUpData>({
     resolver: yupResolver(schema),
   });
 
@@ -72,16 +72,16 @@ export function SignUp({navigation}: Props): JSX.Element {
   }
 
   return (
-    <Container style={{flex: 1}}>
+    <Container style={{ flex: 1 }}>
       <Content style={styles.contentContainer}>
         <View style={styles.logo}>
           <Logo width={100} height={100} />
         </View>
-        <Text style={styles.instruction}>Create your account.</Text>
+        <Text style={styles.instruction}>Create your Account.</Text>
         <Form>
           <Controller
             control={control}
-            render={({onBlur, value, onChange}) => (
+            render={({ onBlur, value, onChange }) => (
               <>
                 <Item regular last style={styles.input}>
                   <Input
@@ -101,7 +101,7 @@ export function SignUp({navigation}: Props): JSX.Element {
           />
           <Controller
             control={control}
-            render={({onBlur, value, onChange}) => (
+            render={({ onBlur, value, onChange }) => (
               <>
                 <Item regular last style={styles.input}>
                   <Input
@@ -121,7 +121,7 @@ export function SignUp({navigation}: Props): JSX.Element {
           />
           <Controller
             control={control}
-            render={({onBlur, value, onChange}) => (
+            render={({ onBlur, value, onChange }) => (
               <>
                 <Item regular last style={styles.input}>
                   <Input
@@ -139,7 +139,7 @@ export function SignUp({navigation}: Props): JSX.Element {
           />
           <Controller
             control={control}
-            render={({onBlur, onChange, value}) => (
+            render={({ onBlur, onChange, value }) => (
               <>
                 <Item regular last style={styles.input}>
                   <Input
@@ -160,7 +160,7 @@ export function SignUp({navigation}: Props): JSX.Element {
           />
           <Controller
             control={control}
-            render={({onBlur, onChange, value}) => (
+            render={({ onBlur, onChange, value }) => (
               <>
                 <Item regular last style={styles.input}>
                   <Input

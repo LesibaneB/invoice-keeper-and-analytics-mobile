@@ -10,25 +10,25 @@ import {
   View,
   Toast,
 } from 'native-base';
-import {StackNavigationProp} from '@react-navigation/stack';
-import {Controller, useForm} from 'react-hook-form';
-import {StyleSheet} from 'react-native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { Controller, useForm } from 'react-hook-form';
+import { StyleSheet } from 'react-native';
 import {
   responsiveFontSize,
   responsiveHeight,
   responsiveWidth,
 } from 'react-native-responsive-dimensions';
-import {RootStackParamList} from '../../../App';
+import { RootStackParamList } from '../../../App';
 import * as yup from 'yup';
-import {yupResolver} from '@hookform/resolvers/yup';
-import {InputError} from '../../components/InputError';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { InputError } from '../../components/InputError';
 import {
   EMAIL_FORMAT_NOT_VALID,
   PASSWORD_LENGTH_NOT_VALID,
 } from '../../utils/messages';
 import Logo from '../../images/Invoice Scanner Logo.svg';
-import {SignInData} from '../../models/SignIn';
-import {signIn} from '../../api/auth';
+import { SignInData } from '../../models/SignIn';
+import { signIn } from '../../api/auth';
 
 type SignInNavigationProp = StackNavigationProp<RootStackParamList, 'SignIn'>;
 
@@ -41,8 +41,8 @@ const schema = yup.object().shape({
   password: yup.string().min(6, PASSWORD_LENGTH_NOT_VALID),
 });
 
-export function SignIn({navigation}: Props): JSX.Element {
-  const {control, handleSubmit, errors} = useForm<SignInData>({
+export function SignIn({ navigation }: Props): JSX.Element {
+  const { control, handleSubmit, errors } = useForm<SignInData>({
     resolver: yupResolver(schema),
   });
 
@@ -61,7 +61,7 @@ export function SignIn({navigation}: Props): JSX.Element {
   }
 
   function navigateToForgotPassword() {
-    console.log('Push to Forgot Password.');
+    navigation.navigate('ForgotPassword');
   }
 
   function navigateToSignUp() {
@@ -69,16 +69,16 @@ export function SignIn({navigation}: Props): JSX.Element {
   }
 
   return (
-    <Container style={{flex: 1}}>
+    <Container style={{ flex: 1 }}>
       <Content style={styles.contentContainer}>
         <View style={styles.logo}>
           <Logo width={100} height={100} />
         </View>
-        <Text style={styles.instruction}>Sign in to your account.</Text>
+        <Text style={styles.instruction}>Sign in to your Account.</Text>
         <Form>
           <Controller
             control={control}
-            render={({onBlur, value, onChange}) => (
+            render={({ onBlur, value, onChange }) => (
               <>
                 <Item regular last style={styles.input}>
                   <Input
@@ -96,7 +96,7 @@ export function SignIn({navigation}: Props): JSX.Element {
           />
           <Controller
             control={control}
-            render={({onBlur, onChange, value}) => (
+            render={({ onBlur, onChange, value }) => (
               <>
                 <Item regular last style={styles.input}>
                   <Input

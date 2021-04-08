@@ -1,19 +1,21 @@
 import React from 'react';
 import Main from './src/screens/main/Main';
-import {NavigationContainer} from '@react-navigation/native';
-import {createStackNavigator} from '@react-navigation/stack';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 import ScanInvoice from './src/screens/scan-invoice/ScanInvoice';
-import {PreviewInvoice} from './src/screens/preview-invoice/PreviewInvoice';
-import {SignIn} from './src/screens/sign-in/SignIn';
-import {Root} from 'native-base';
+import { PreviewInvoice } from './src/screens/preview-invoice/PreviewInvoice';
+import { SignIn } from './src/screens/sign-in/SignIn';
+import { Root } from 'native-base';
 import { SignUp } from './src/screens/sign-up/SignUp';
+import { ForgotPassword } from './src/screens/forgot-password/ForgotPassword';
 
 export type RootStackParamList = {
   Main: undefined;
   ScanInvoice: undefined;
-  PreviewInvoice: {imageUri: string};
+  PreviewInvoice: { imageUri: string };
   SignIn: undefined;
   SignUp: undefined;
+  ForgotPassword: undefined;
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -56,6 +58,14 @@ export default function App(): JSX.Element {
                 headerShown: false,
               }}
               component={SignUp}
+            />
+            <Stack.Screen
+              name="ForgotPassword"
+              options={{
+                headerShown: true,
+                title: ''
+              }}
+              component={ForgotPassword}
             />
           </Stack.Navigator>
         )}
