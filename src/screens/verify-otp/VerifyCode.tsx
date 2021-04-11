@@ -64,7 +64,7 @@ export function VerifyCode({ navigation, route }: Props): JSX.Element {
     try {
       const email = route?.params?.email;
       await verifyOTPCode({ otp: Number(code), email });
-      console.log('Navigate to new password screen');
+      navigation.navigate('ResetPassword', { email });
     } catch (error) {
       Toast.show({
         text: error.message,
