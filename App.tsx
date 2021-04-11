@@ -8,6 +8,7 @@ import { SignIn } from './src/screens/sign-in/SignIn';
 import { Root } from 'native-base';
 import { SignUp } from './src/screens/sign-up/SignUp';
 import { ForgotPassword } from './src/screens/forgot-password/ForgotPassword';
+import { VerifyCode } from './src/screens/verify-otp/VerifyCode';
 
 export type RootStackParamList = {
   Main: undefined;
@@ -16,6 +17,7 @@ export type RootStackParamList = {
   SignIn: undefined;
   SignUp: undefined;
   ForgotPassword: undefined;
+  VerifyCode: { email: string };
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -63,9 +65,17 @@ export default function App(): JSX.Element {
               name="ForgotPassword"
               options={{
                 headerShown: true,
-                title: ''
+                title: '',
               }}
               component={ForgotPassword}
+            />
+            <Stack.Screen
+              name="VerifyCode"
+              options={{
+                headerShown: true,
+                title: '',
+              }}
+              component={VerifyCode}
             />
           </Stack.Navigator>
         )}

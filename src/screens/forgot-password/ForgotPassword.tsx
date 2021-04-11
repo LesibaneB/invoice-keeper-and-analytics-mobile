@@ -8,7 +8,6 @@ import {
   Item,
   Text,
   Toast,
-  View,
 } from 'native-base';
 import React from 'react';
 import { RootStackParamList } from '../../../App';
@@ -24,7 +23,7 @@ import {
   responsiveWidth,
 } from 'react-native-responsive-dimensions';
 import { StyleSheet } from 'react-native';
-import { forgotPassword } from '../../api/auth';
+import { sendVerification } from '../../api/auth';
 
 type ForgotPasswordNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -49,8 +48,8 @@ export function ForgotPassword({ navigation }: Props): JSX.Element {
 
   async function submit(data: ForgotPasswordData) {
     try {
-      await forgotPassword(data);
-      console.log('Success so navigate!');
+      //   await forgotPassword(data);
+      navigation.navigate('VerifyCode', { email: data.email });
     } catch (error) {
       Toast.show({
         text: error.message,
