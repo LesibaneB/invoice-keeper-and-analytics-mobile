@@ -1,3 +1,4 @@
+import { ResetPasswordData } from './../models/ResetPasswordData';
 import { VerifyCodeData } from './../models/VerifyCodeData';
 import { ForgotPasswordData as SendVerificationData } from './../models/ForgotPassword';
 import axios from 'axios';
@@ -59,6 +60,25 @@ export async function verifyOTPCode({
       emailAddress: email,
       otp,
     });
+  } catch (error) {
+    throw error.response.data;
+  }
+}
+
+export async function resetPassword(
+  email: string,
+  password: string,
+  confirmPassword: string,
+): Promise<void> {
+  try {
+    await axios.put<void>(
+      'http://192.168.0.101:7000/auth/account/reset-password',
+      {
+        emailAddress: email,
+        password,
+        confirmPassword,
+      },
+    );
   } catch (error) {
     throw error.response.data;
   }

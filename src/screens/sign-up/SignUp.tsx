@@ -56,6 +56,7 @@ export function SignUp({ navigation }: Props): JSX.Element {
   async function submit(data: SignUpData) {
     try {
       await signUp(data);
+      navigateToSignIn();
     } catch (error) {
       Toast.show({
         text: error.message,
