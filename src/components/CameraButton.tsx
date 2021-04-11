@@ -1,12 +1,15 @@
 import React from 'react';
-import {StyleSheet, TouchableOpacity, View} from 'react-native';
-import { responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import {
+  responsiveHeight,
+  responsiveWidth,
+} from 'react-native-responsive-dimensions';
 
 interface Props {
   onPress: () => void;
 }
 
-export function CameraButton({onPress}: Props): JSX.Element {
+export function CameraButton({ onPress }: Props): JSX.Element {
   return (
     <View style={styles.buttonRing}>
       <TouchableOpacity onPress={onPress}>

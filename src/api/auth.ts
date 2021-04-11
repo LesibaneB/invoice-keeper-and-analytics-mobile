@@ -1,4 +1,5 @@
-import { ForgotPasswordData } from './../models/ForgotPassword';
+import { VerifyCodeData } from './../models/VerifyCodeData';
+import { ForgotPasswordData as SendVerificationData } from './../models/ForgotPassword';
 import axios from 'axios';
 import { SignInData } from '../models/SignIn';
 import { SignUpData } from '../models/SignUp';
@@ -34,9 +35,9 @@ export async function signUp({
   }
 }
 
-export async function forgotPassword({
+export async function sendVerification({
   email,
-}: ForgotPasswordData): Promise<void> {
+}: SendVerificationData): Promise<void> {
   try {
     await axios.post<void>(
       'http://192.168.0.101:7000/auth/account/send-verification',
@@ -44,6 +45,20 @@ export async function forgotPassword({
         emailAddress: email,
       },
     );
+  } catch (error) {
+    throw error.response.data;
+  }
+}
+
+export async function verifyOTPCode({
+  email,
+  otp,
+}: VerifyCodeData): Promise<void> {
+  try {
+    await axios.post<void>('http://192.168.0.101:7000/auth/account/verify', {
+      emailAddress: email,
+      otp,
+    });
   } catch (error) {
     throw error.response.data;
   }

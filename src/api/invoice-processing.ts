@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {EntitiesResult} from '../models/EntitiesResult';
+import { EntitiesResult } from '../models/EntitiesResult';
 
 export default async function analyzeInvoiceEntities(
   invoiceText: string,

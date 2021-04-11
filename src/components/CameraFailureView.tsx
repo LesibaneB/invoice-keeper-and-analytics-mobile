@@ -1,4 +1,4 @@
-import {Button, Container, Content, Text} from 'native-base';
+import { Button, Container, Content, Text } from 'native-base';
 import React from 'react';
 
 interface Props {
@@ -23,8 +23,8 @@ export function CameraFailureView({
           onPress={onRequestCameraPermissions}
           transparent
           block
-          style={{marginTop: 10}}>
-          <Text style={{color: '#78ed68'}}>Grant camera permissions</Text>
+          style={{ marginTop: 10 }}>
+          <Text style={{ color: '#78ed68' }}>Grant camera permissions</Text>
         </Button>
       </Content>
     </Container>
