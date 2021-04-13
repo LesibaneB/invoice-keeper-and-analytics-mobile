@@ -15,6 +15,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../../../App';
 import { RouteProp } from '@react-navigation/native';
 import { sendVerification, verifyOTPCode } from '../../api/auth';
+import { Loader } from '../../components/Loader';
 
 type VerifyCodeNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -37,11 +38,14 @@ export function VerifyCode({ navigation, route }: Props): JSX.Element {
   const [currentInputIndex, setCurrentInputIndex] = useState<number>(0);
   const [code, setCode] = useState<string>('');
   const [buttonDisabled, setButtonDisabled] = useState<boolean>(true);
+  const [showLoader, setShowLoader] = useState<boolean>(false);
 
   async function resendCode() {
     try {
       const email = route?.params?.email;
+      setShowLoader(true);
       await sendVerification({ email });
+      setShowLoader(false);
       Toast.show({
         text: 'Another email with a new code has been sent.',
         buttonText: 'Okay',
@@ -50,6 +54,7 @@ export function VerifyCode({ navigation, route }: Props): JSX.Element {
         type: 'success',
       });
     } catch (error) {
+      setShowLoader(false);
       Toast.show({
         text: error.message,
         buttonText: 'Okay',
@@ -115,6 +120,7 @@ export function VerifyCode({ navigation, route }: Props): JSX.Element {
   return (
     <Container style={{ flex: 1 }}>
       <Content style={styles.contentContainer}>
+        <Loader visible={showLoader} />
         <Text style={styles.instruction}>Enter Verification Code.</Text>
         <View style={styles.textInputContainer}>
           {new Array(NUMBER_OF_INPUTS).fill(0).map((_, index) => {

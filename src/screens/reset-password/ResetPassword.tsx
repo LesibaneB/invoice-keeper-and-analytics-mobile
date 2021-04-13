@@ -9,7 +9,7 @@ import {
   Text,
   Toast,
 } from 'native-base';
-import React from 'react';
+import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { StyleSheet } from 'react-native';
 import {
@@ -28,6 +28,7 @@ import {
 import { yupResolver } from '@hookform/resolvers/yup';
 import { RouteProp } from '@react-navigation/native';
 import { resetPassword } from '../../api/auth';
+import { Loader } from '../../components/Loader';
 
 type ResetPasswordNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -53,14 +54,18 @@ export function ResetPassword({ navigation, route }: Props): JSX.Element {
   const { control, handleSubmit, errors } = useForm<ResetPasswordData>({
     resolver: yupResolver(schema),
   });
+  const [showLoader, setShowLoader] = useState<boolean>(false);
 
   async function submit(data: ResetPasswordData) {
     try {
       const email = route?.params?.email;
       const { password, confirmPassword } = data;
+      setShowLoader(true);
       await resetPassword(email, password, confirmPassword);
+      setShowLoader(false);
       navigation.navigate('Main');
     } catch (error) {
+      setShowLoader(false);
       Toast.show({
         text: error.message,
         buttonText: 'Okay',
@@ -74,6 +79,7 @@ export function ResetPassword({ navigation, route }: Props): JSX.Element {
   return (
     <Container style={{ flex: 1 }}>
       <Content style={styles.contentContainer}>
+        <Loader visible={showLoader} />
         <Text style={styles.instruction}>Create new Password.</Text>
         <Text style={styles.explanationText}>
           Your new password must be different from your previous password.
