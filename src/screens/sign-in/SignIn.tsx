@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Button,
   Container,
@@ -29,6 +29,7 @@ import {
 import Logo from '../../images/Invoice Scanner Logo.svg';
 import { SignInData } from '../../models/SignIn';
 import { signIn } from '../../api/auth';
+import { Loader } from '../../components/Loader';
 
 type SignInNavigationProp = StackNavigationProp<RootStackParamList, 'SignIn'>;
 
@@ -45,11 +46,15 @@ export function SignIn({ navigation }: Props): JSX.Element {
   const { control, handleSubmit, errors } = useForm<SignInData>({
     resolver: yupResolver(schema),
   });
+  const [showLoader, setShowLoader] = useState<boolean>(false);
 
   async function submit(data: SignInData) {
     try {
+      setShowLoader(true);
       await signIn(data);
+      setShowLoader(false);
     } catch (error) {
+      setShowLoader(false);
       Toast.show({
         text: error.message,
         buttonText: 'Okay',
@@ -71,6 +76,7 @@ export function SignIn({ navigation }: Props): JSX.Element {
   return (
     <Container style={{ flex: 1 }}>
       <Content style={styles.contentContainer}>
+        <Loader visible={showLoader} />
         <View style={styles.logo}>
           <Logo width={100} height={100} />
         </View>
@@ -176,5 +182,9 @@ const styles = StyleSheet.create({
   },
   noAccountTextSecondPart: {
     color: '#0000EE',
+  },
+  loader: {
+    width: responsiveWidth(50),
+    height: responsiveHeight(50),
   },
 });

@@ -9,7 +9,7 @@ import {
   Toast,
   View,
 } from 'native-base';
-import React from 'react';
+import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { StyleSheet } from 'react-native';
 import {
@@ -30,6 +30,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../../../App';
 import { SignUpData } from '../../models/SignUp';
 import { signUp } from '../../api/auth';
+import { Loader } from '../../components/Loader';
 
 type SignUpNavigationProp = StackNavigationProp<RootStackParamList, 'SignUp'>;
 
@@ -52,12 +53,16 @@ export function SignUp({ navigation }: Props): JSX.Element {
   const { control, handleSubmit, errors } = useForm<SignUpData>({
     resolver: yupResolver(schema),
   });
+  const [showLoader, setShowLoader] = useState<boolean>(false);
 
   async function submit(data: SignUpData) {
     try {
+      setShowLoader(true);
       await signUp(data);
+      setShowLoader(false);
       navigateToSignIn();
     } catch (error) {
+      setShowLoader(false);
       Toast.show({
         text: error.message,
         buttonText: 'Okay',
@@ -75,6 +80,7 @@ export function SignUp({ navigation }: Props): JSX.Element {
   return (
     <Container style={{ flex: 1 }}>
       <Content style={styles.contentContainer}>
+        <Loader visible={showLoader} />
         <View style={styles.logo}>
           <Logo width={100} height={100} />
         </View>

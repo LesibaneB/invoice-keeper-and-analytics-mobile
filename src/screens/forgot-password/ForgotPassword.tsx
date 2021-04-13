@@ -9,7 +9,7 @@ import {
   Text,
   Toast,
 } from 'native-base';
-import React from 'react';
+import React, { useState } from 'react';
 import { RootStackParamList } from '../../../App';
 import * as yup from 'yup';
 import { EMAIL_FORMAT_NOT_VALID } from '../../utils/messages';
@@ -24,6 +24,7 @@ import {
 } from 'react-native-responsive-dimensions';
 import { StyleSheet } from 'react-native';
 import { sendVerification } from '../../api/auth';
+import { Loader } from '../../components/Loader';
 
 type ForgotPasswordNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -45,12 +46,16 @@ export function ForgotPassword({ navigation }: Props): JSX.Element {
   const { control, handleSubmit, errors } = useForm<ForgotPasswordData>({
     resolver: yupResolver(schema),
   });
+  const [showLoader, setShowLoader] = useState<boolean>(false);
 
   async function submit(data: ForgotPasswordData) {
     try {
-      //   await forgotPassword(data);
+      setShowLoader(true);
+      await sendVerification(data);
+      setShowLoader(false);
       navigation.navigate('VerifyCode', { email: data.email });
     } catch (error) {
+      setShowLoader(false);
       Toast.show({
         text: error.message,
         buttonText: 'Okay',
@@ -64,6 +69,7 @@ export function ForgotPassword({ navigation }: Props): JSX.Element {
   return (
     <Container style={{ flex: 1 }}>
       <Content style={styles.contentContainer}>
+        <Loader visible={showLoader} />
         <Text style={styles.instruction}>Reset Password.</Text>
         <Text style={styles.explanationText}>
           Enter the email associated with your Account and we'll send an email
