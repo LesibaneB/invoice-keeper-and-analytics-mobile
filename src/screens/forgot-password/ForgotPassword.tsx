@@ -17,14 +17,9 @@ import { ForgotPasswordData } from '../../models/ForgotPassword';
 import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { InputError } from '../../components/InputError';
-import {
-  responsiveFontSize,
-  responsiveHeight,
-  responsiveWidth,
-} from 'react-native-responsive-dimensions';
-import { StyleSheet } from 'react-native';
 import { sendVerification } from '../../api/auth';
 import { Loader } from '../../components/Loader';
+import sharedStyles from '../../styles/styles';
 
 type ForgotPasswordNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -53,7 +48,10 @@ export function ForgotPassword({ navigation }: Props): JSX.Element {
       setShowLoader(true);
       await sendVerification(data);
       setShowLoader(false);
-      navigation.navigate('VerifyCode', { email: data.email });
+      navigation.navigate('VerifyCode', {
+        email: data.email,
+        originalRoute: 'ForgotPassword',
+      });
     } catch (error) {
       setShowLoader(false);
       Toast.show({
@@ -68,10 +66,10 @@ export function ForgotPassword({ navigation }: Props): JSX.Element {
 
   return (
     <Container style={{ flex: 1 }}>
-      <Content style={styles.contentContainer}>
+      <Content style={sharedStyles.contentContainer}>
         <Loader visible={showLoader} />
-        <Text style={styles.instruction}>Reset Password.</Text>
-        <Text style={styles.explanationText}>
+        <Text style={sharedStyles.instruction}>Reset Password.</Text>
+        <Text style={sharedStyles.explanationText}>
           Enter the email associated with your Account and we'll send an email
           with a verification code.
         </Text>
@@ -80,7 +78,7 @@ export function ForgotPassword({ navigation }: Props): JSX.Element {
             control={control}
             render={({ onBlur, value, onChange }) => (
               <>
-                <Item regular last style={styles.input}>
+                <Item regular last style={sharedStyles.input}>
                   <Input
                     placeholder="Email"
                     value={value}
@@ -96,7 +94,7 @@ export function ForgotPassword({ navigation }: Props): JSX.Element {
           />
           <Button
             block
-            style={styles.sendCodeButton}
+            style={sharedStyles.actionButton}
             onPress={handleSubmit(submit)}>
             <Text uppercase={false}>Send Code</Text>
           </Button>
@@ -105,31 +103,3 @@ export function ForgotPassword({ navigation }: Props): JSX.Element {
     </Container>
   );
 }
-
-const styles = StyleSheet.create({
-  contentContainer: {
-    marginLeft: responsiveWidth(8),
-    marginRight: responsiveWidth(8),
-    flex: 1,
-  },
-  instruction: {
-    marginTop: responsiveHeight(2),
-    fontSize: responsiveFontSize(2.3),
-  },
-  input: {
-    borderRadius: 5,
-    marginTop: responsiveHeight(3),
-  },
-  explanationText: {
-    flex: 1,
-    marginTop: responsiveHeight(1),
-    color: '#000000',
-    textAlign: 'justify',
-    fontSize: responsiveFontSize(1.8),
-  },
-  sendCodeButton: {
-    backgroundColor: '#321AC6',
-    marginTop: responsiveHeight(3),
-    borderRadius: 5,
-  },
-});

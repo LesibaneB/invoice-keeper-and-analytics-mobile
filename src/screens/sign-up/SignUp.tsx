@@ -12,11 +12,7 @@ import {
 import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { StyleSheet } from 'react-native';
-import {
-  responsiveFontSize,
-  responsiveHeight,
-  responsiveWidth,
-} from 'react-native-responsive-dimensions';
+import { responsiveHeight } from 'react-native-responsive-dimensions';
 import { InputError } from '../../components/InputError';
 import Logo from '../../images/Invoice Scanner Logo.svg';
 import {
@@ -31,6 +27,7 @@ import { RootStackParamList } from '../../../App';
 import { SignUpData } from '../../models/SignUp';
 import { signUp } from '../../api/auth';
 import { Loader } from '../../components/Loader';
+import sharedStyles from '../../styles/styles';
 
 type SignUpNavigationProp = StackNavigationProp<RootStackParamList, 'SignUp'>;
 
@@ -60,7 +57,10 @@ export function SignUp({ navigation }: Props): JSX.Element {
       setShowLoader(true);
       await signUp(data);
       setShowLoader(false);
-      navigateToSignIn();
+      navigation.navigate('VerifyCode', {
+        email: data.email,
+        originalRoute: 'SignUp',
+      });
     } catch (error) {
       setShowLoader(false);
       Toast.show({
@@ -74,23 +74,23 @@ export function SignUp({ navigation }: Props): JSX.Element {
   }
 
   function navigateToSignIn() {
-    navigation.goBack();
+    navigation.navigate('SignIn');
   }
 
   return (
     <Container style={{ flex: 1 }}>
-      <Content style={styles.contentContainer}>
+      <Content style={sharedStyles.contentContainer}>
         <Loader visible={showLoader} />
-        <View style={styles.logo}>
+        <View style={sharedStyles.logo}>
           <Logo width={100} height={100} />
         </View>
-        <Text style={styles.instruction}>Create your Account.</Text>
+        <Text style={sharedStyles.instruction}>Create your Account.</Text>
         <Form>
           <Controller
             control={control}
             render={({ onBlur, value, onChange }) => (
               <>
-                <Item regular last style={styles.input}>
+                <Item regular last style={sharedStyles.input}>
                   <Input
                     placeholder="First Name"
                     value={value}
@@ -110,7 +110,7 @@ export function SignUp({ navigation }: Props): JSX.Element {
             control={control}
             render={({ onBlur, value, onChange }) => (
               <>
-                <Item regular last style={styles.input}>
+                <Item regular last style={sharedStyles.input}>
                   <Input
                     placeholder="Last Name"
                     value={value}
@@ -130,7 +130,7 @@ export function SignUp({ navigation }: Props): JSX.Element {
             control={control}
             render={({ onBlur, value, onChange }) => (
               <>
-                <Item regular last style={styles.input}>
+                <Item regular last style={sharedStyles.input}>
                   <Input
                     placeholder="Email"
                     value={value}
@@ -148,7 +148,7 @@ export function SignUp({ navigation }: Props): JSX.Element {
             control={control}
             render={({ onBlur, onChange, value }) => (
               <>
-                <Item regular last style={styles.input}>
+                <Item regular last style={sharedStyles.input}>
                   <Input
                     placeholder="Password"
                     value={value}
@@ -169,7 +169,7 @@ export function SignUp({ navigation }: Props): JSX.Element {
             control={control}
             render={({ onBlur, onChange, value }) => (
               <>
-                <Item regular last style={styles.input}>
+                <Item regular last style={sharedStyles.input}>
                   <Input
                     placeholder="Confirm Password"
                     value={value}
@@ -188,7 +188,7 @@ export function SignUp({ navigation }: Props): JSX.Element {
           />
           <Button
             block
-            style={styles.signUpButton}
+            style={sharedStyles.actionButton}
             onPress={handleSubmit(submit)}>
             <Text uppercase={false}>Sign Up</Text>
           </Button>
@@ -207,29 +207,6 @@ export function SignUp({ navigation }: Props): JSX.Element {
 }
 
 const styles = StyleSheet.create({
-  contentContainer: {
-    marginLeft: responsiveWidth(8),
-    marginRight: responsiveWidth(8),
-    flex: 1,
-  },
-  logo: {
-    marginTop: responsiveHeight(10),
-    flex: 1,
-    alignSelf: 'center',
-  },
-  instruction: {
-    marginTop: responsiveHeight(5),
-    fontSize: responsiveFontSize(2.3),
-  },
-  input: {
-    borderRadius: 5,
-    marginTop: responsiveHeight(2),
-  },
-  signUpButton: {
-    backgroundColor: '#321AC6',
-    marginTop: responsiveHeight(2),
-    borderRadius: 5,
-  },
   haveAnAccountTextFirstPart: {
     marginTop: responsiveHeight(2),
     color: '#000000',

@@ -11,12 +11,6 @@ import {
 } from 'native-base';
 import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { StyleSheet } from 'react-native';
-import {
-  responsiveFontSize,
-  responsiveHeight,
-  responsiveWidth,
-} from 'react-native-responsive-dimensions';
 import { RootStackParamList } from '../../../App';
 import { InputError } from '../../components/InputError';
 import { ResetPasswordData } from '../../models/ResetPasswordData';
@@ -29,6 +23,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { RouteProp } from '@react-navigation/native';
 import { resetPassword } from '../../api/auth';
 import { Loader } from '../../components/Loader';
+import sharedStyles from '../../styles/styles';
 
 type ResetPasswordNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -63,7 +58,7 @@ export function ResetPassword({ navigation, route }: Props): JSX.Element {
       setShowLoader(true);
       await resetPassword(email, password, confirmPassword);
       setShowLoader(false);
-      navigation.navigate('Main');
+      navigation.navigate('SignIn');
     } catch (error) {
       setShowLoader(false);
       Toast.show({
@@ -78,10 +73,10 @@ export function ResetPassword({ navigation, route }: Props): JSX.Element {
 
   return (
     <Container style={{ flex: 1 }}>
-      <Content style={styles.contentContainer}>
+      <Content style={sharedStyles.contentContainer}>
         <Loader visible={showLoader} />
-        <Text style={styles.instruction}>Create new Password.</Text>
-        <Text style={styles.explanationText}>
+        <Text style={sharedStyles.instruction}>Create new Password.</Text>
+        <Text style={sharedStyles.explanationText}>
           Your new password must be different from your previous password.
         </Text>
         <Form>
@@ -89,7 +84,7 @@ export function ResetPassword({ navigation, route }: Props): JSX.Element {
             control={control}
             render={({ onBlur, onChange, value }) => (
               <>
-                <Item regular last style={styles.input}>
+                <Item regular last style={sharedStyles.input}>
                   <Input
                     placeholder="Password"
                     value={value}
@@ -110,7 +105,7 @@ export function ResetPassword({ navigation, route }: Props): JSX.Element {
             control={control}
             render={({ onBlur, onChange, value }) => (
               <>
-                <Item regular last style={styles.input}>
+                <Item regular last style={sharedStyles.input}>
                   <Input
                     placeholder="Confirm Password"
                     value={value}
@@ -129,7 +124,7 @@ export function ResetPassword({ navigation, route }: Props): JSX.Element {
           />
           <Button
             block
-            style={styles.resetPasswordButton}
+            style={sharedStyles.actionButton}
             onPress={handleSubmit(submit)}>
             <Text uppercase={false}>Reset Password</Text>
           </Button>
@@ -138,31 +133,3 @@ export function ResetPassword({ navigation, route }: Props): JSX.Element {
     </Container>
   );
 }
-
-const styles = StyleSheet.create({
-  contentContainer: {
-    marginLeft: responsiveWidth(8),
-    marginRight: responsiveWidth(8),
-    flex: 1,
-  },
-  instruction: {
-    marginTop: responsiveHeight(2),
-    fontSize: responsiveFontSize(2.3),
-  },
-  input: {
-    borderRadius: 5,
-    marginTop: responsiveHeight(3),
-  },
-  explanationText: {
-    flex: 1,
-    marginTop: responsiveHeight(1),
-    color: '#000000',
-    textAlign: 'justify',
-    fontSize: responsiveFontSize(1.8),
-  },
-  resetPasswordButton: {
-    backgroundColor: '#321AC6',
-    marginTop: responsiveHeight(3),
-    borderRadius: 5,
-  },
-});

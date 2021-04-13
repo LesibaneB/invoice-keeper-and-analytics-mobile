@@ -16,6 +16,7 @@ import { RootStackParamList } from '../../../App';
 import { RouteProp } from '@react-navigation/native';
 import { sendVerification, verifyOTPCode } from '../../api/auth';
 import { Loader } from '../../components/Loader';
+import sharedStyles from '../../styles/styles';
 
 type VerifyCodeNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -69,7 +70,12 @@ export function VerifyCode({ navigation, route }: Props): JSX.Element {
     try {
       const email = route?.params?.email;
       await verifyOTPCode({ otp: Number(code), email });
-      navigation.navigate('ResetPassword', { email });
+      const originalRoute = route?.params?.originalRoute;
+      if (originalRoute === 'ForgotPassword') {
+        navigation.navigate('ResetPassword', { email });
+      } else {
+        navigation.navigate('SignIn');
+      }
     } catch (error) {
       Toast.show({
         text: error.message,
@@ -119,9 +125,13 @@ export function VerifyCode({ navigation, route }: Props): JSX.Element {
 
   return (
     <Container style={{ flex: 1 }}>
-      <Content style={styles.contentContainer}>
+      <Content style={sharedStyles.contentContainer}>
         <Loader visible={showLoader} />
-        <Text style={styles.instruction}>Enter Verification Code.</Text>
+        <Text style={sharedStyles.instruction}>Enter Verification Code.</Text>
+        <Text style={sharedStyles.explanationText}>
+          We sent an email to {route?.params?.email} with a verification code to
+          verify your account.
+        </Text>
         <View style={styles.textInputContainer}>
           {new Array(NUMBER_OF_INPUTS).fill(0).map((_, index) => {
             return (
@@ -162,15 +172,6 @@ export function VerifyCode({ navigation, route }: Props): JSX.Element {
 }
 
 const styles = StyleSheet.create({
-  contentContainer: {
-    marginLeft: responsiveWidth(8),
-    marginRight: responsiveWidth(8),
-    flex: 1,
-  },
-  instruction: {
-    marginTop: responsiveHeight(2),
-    fontSize: responsiveFontSize(2.3),
-  },
   noEmailReceivedTextFirstPart: {
     marginTop: responsiveHeight(2),
     color: '#000000',
