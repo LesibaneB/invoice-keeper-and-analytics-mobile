@@ -1,15 +1,19 @@
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
 import Main from './src/screens/main/Main';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import ScanInvoice from './src/screens/scan-invoice/ScanInvoice';
 import { PreviewInvoice } from './src/screens/preview-invoice/PreviewInvoice';
-import { SignIn } from './src/screens/sign-in/SignIn';
+import SignIn from './src/screens/sign-in/SignIn';
 import { Root } from 'native-base';
 import { SignUp } from './src/screens/sign-up/SignUp';
 import { ForgotPassword } from './src/screens/forgot-password/ForgotPassword';
 import { VerifyCode } from './src/screens/verify-otp/VerifyCode';
 import { ResetPassword } from './src/screens/reset-password/ResetPassword';
+import { getValueFor } from './src/secure-store/secure-store';
+import { AUTH_TOKEN_KEY } from './src/utils/consts';
+import { observer } from 'mobx-react';
+import UserStore from './src/store/user';
 
 export type RootStackParamList = {
   Main: undefined;
@@ -18,18 +22,34 @@ export type RootStackParamList = {
   SignIn: undefined;
   SignUp: undefined;
   ForgotPassword: undefined;
-  VerifyCode: { email: string };
+  VerifyCode: {
+    email: string;
+    originalRoute: 'SignUp' | 'ForgotPassword';
+  };
   ResetPassword: { email: string };
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
 
-export default function App(): JSX.Element {
-  const isSignedIn = false;
+const App = (): JSX.Element => {
+  const userStore = useContext(UserStore);
+
+  useEffect(() => {
+    const getStoredToken = async () => {
+      const stringifiedToken = await getValueFor(AUTH_TOKEN_KEY);
+      if (stringifiedToken) {
+        const jsonToken = JSON.parse(stringifiedToken);
+        userStore.setIsSignedIn(true);
+      }
+    };
+
+    getStoredToken();
+  }, []);
+
   return (
     <NavigationContainer>
       <Root>
-        {isSignedIn ? (
+        {userStore.isSignedIn ? (
           <Stack.Navigator initialRouteName="Main">
             <Stack.Screen
               options={{
@@ -92,4 +112,6 @@ export default function App(): JSX.Element {
       </Root>
     </NavigationContainer>
   );
-}
+};
+
+export default observer(App);

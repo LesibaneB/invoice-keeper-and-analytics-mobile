@@ -4,13 +4,22 @@ import { ForgotPasswordData as SendVerificationData } from './../models/ForgotPa
 import axios from 'axios';
 import { SignInData } from '../models/SignIn';
 import { SignUpData } from '../models/SignUp';
+import { JwtToken } from '../models/JwtToken';
 
-export async function signIn({ email, password }: SignInData): Promise<void> {
+export async function signIn({
+  email,
+  password,
+}: SignInData): Promise<JwtToken> {
   try {
-    await axios.post<void>('http://192.168.0.101:7000/auth/sign-in', {
-      emailAddress: email,
-      password,
-    });
+    const result = await axios.post<JwtToken>(
+      'http://192.168.0.101:7000/auth/sign-in',
+      {
+        emailAddress: email,
+        password,
+      },
+    );
+
+    return result.data;
   } catch (error) {
     throw error.response.data;
   }

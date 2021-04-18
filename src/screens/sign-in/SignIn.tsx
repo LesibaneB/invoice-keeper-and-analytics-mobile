@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import {
   Button,
   Container,
@@ -13,11 +13,7 @@ import {
 import { StackNavigationProp } from '@react-navigation/stack';
 import { Controller, useForm } from 'react-hook-form';
 import { StyleSheet } from 'react-native';
-import {
-  responsiveFontSize,
-  responsiveHeight,
-  responsiveWidth,
-} from 'react-native-responsive-dimensions';
+import { responsiveHeight } from 'react-native-responsive-dimensions';
 import { RootStackParamList } from '../../../App';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -30,6 +26,11 @@ import Logo from '../../images/Invoice Scanner Logo.svg';
 import { SignInData } from '../../models/SignIn';
 import { signIn } from '../../api/auth';
 import { Loader } from '../../components/Loader';
+import { save } from '../../secure-store/secure-store';
+import { AUTH_TOKEN_KEY } from '../../utils/consts';
+import UserStore from '../../store/user';
+import { observer } from 'mobx-react';
+import sharedStyles from '../../styles/styles';
 
 type SignInNavigationProp = StackNavigationProp<RootStackParamList, 'SignIn'>;
 
@@ -42,16 +43,19 @@ const schema = yup.object().shape({
   password: yup.string().min(6, PASSWORD_LENGTH_NOT_VALID),
 });
 
-export function SignIn({ navigation }: Props): JSX.Element {
+const SignIn = ({ navigation }: Props): JSX.Element => {
   const { control, handleSubmit, errors } = useForm<SignInData>({
     resolver: yupResolver(schema),
   });
   const [showLoader, setShowLoader] = useState<boolean>(false);
+  const userStore = useContext(UserStore);
 
   async function submit(data: SignInData) {
     try {
       setShowLoader(true);
-      await signIn(data);
+      const authToken = await signIn(data);
+      await save(AUTH_TOKEN_KEY, JSON.stringify(authToken));
+      userStore.setIsSignedIn(true);
       setShowLoader(false);
     } catch (error) {
       setShowLoader(false);
@@ -75,18 +79,18 @@ export function SignIn({ navigation }: Props): JSX.Element {
 
   return (
     <Container style={{ flex: 1 }}>
-      <Content style={styles.contentContainer}>
+      <Content style={sharedStyles.contentContainer}>
         <Loader visible={showLoader} />
-        <View style={styles.logo}>
+        <View style={sharedStyles.logo}>
           <Logo width={100} height={100} />
         </View>
-        <Text style={styles.instruction}>Sign in to your Account.</Text>
+        <Text style={sharedStyles.instruction}>Sign in to your Account.</Text>
         <Form>
           <Controller
             control={control}
             render={({ onBlur, value, onChange }) => (
               <>
-                <Item regular last style={styles.input}>
+                <Item regular last style={sharedStyles.input}>
                   <Input
                     placeholder="Email"
                     value={value}
@@ -104,7 +108,7 @@ export function SignIn({ navigation }: Props): JSX.Element {
             control={control}
             render={({ onBlur, onChange, value }) => (
               <>
-                <Item regular last style={styles.input}>
+                <Item regular last style={sharedStyles.input}>
                   <Input
                     placeholder="Password"
                     value={value}
@@ -128,7 +132,7 @@ export function SignIn({ navigation }: Props): JSX.Element {
           </Text>
           <Button
             block
-            style={styles.signInButton}
+            style={sharedStyles.actionButton}
             onPress={handleSubmit(submit)}>
             <Text uppercase={false}>Sign In</Text>
           </Button>
@@ -144,37 +148,14 @@ export function SignIn({ navigation }: Props): JSX.Element {
       </Content>
     </Container>
   );
-}
+};
 
 const styles = StyleSheet.create({
-  contentContainer: {
-    marginLeft: responsiveWidth(8),
-    marginRight: responsiveWidth(8),
-    flex: 1,
-  },
-  logo: {
-    marginTop: responsiveHeight(10),
-    flex: 1,
-    alignSelf: 'center',
-  },
-  instruction: {
-    marginTop: responsiveHeight(5),
-    fontSize: responsiveFontSize(2.3),
-  },
-  input: {
-    borderRadius: 5,
-    marginTop: responsiveHeight(2),
-  },
   forgotPasswordText: {
     flex: 1,
     alignSelf: 'flex-end',
     marginTop: responsiveHeight(2),
     color: '#0000EE',
-  },
-  signInButton: {
-    backgroundColor: '#321AC6',
-    marginTop: responsiveHeight(2),
-    borderRadius: 5,
   },
   noAccountTextFirstPart: {
     marginTop: responsiveHeight(2),
@@ -183,8 +164,6 @@ const styles = StyleSheet.create({
   noAccountTextSecondPart: {
     color: '#0000EE',
   },
-  loader: {
-    width: responsiveWidth(50),
-    height: responsiveHeight(50),
-  },
 });
+
+export default observer(SignIn);
