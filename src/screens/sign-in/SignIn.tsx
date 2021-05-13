@@ -67,7 +67,7 @@ const SignIn = ({ navigation }: Props): JSX.Element => {
         type: 'danger',
       });
     }
-  }
+  } 
 
   function navigateToForgotPassword() {
     navigation.navigate('ForgotPassword');

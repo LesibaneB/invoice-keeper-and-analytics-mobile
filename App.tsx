@@ -49,11 +49,12 @@ const App = (): JSX.Element => {
   return (
     <NavigationContainer>
       <Root>
-        {userStore.isSignedIn ? (
+        {true ? (
           <Stack.Navigator initialRouteName="Main">
             <Stack.Screen
               options={{
-                headerShown: false,
+                headerTitle: 'Invoices',
+                headerTitleAlign: 'center',
               }}
               name="Main"
               component={Main}
