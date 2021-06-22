@@ -5,7 +5,7 @@ import {RouteProp} from '@react-navigation/native';
 import {Image, StyleSheet} from 'react-native';
 import {RootStackParamList} from '../../../App';
 import ml from '@react-native-firebase/ml';
-import analyzeInvoiceEntities from '../../api/invoice-processing';
+import analyzeInvoiceEntities from '../../api/invoice';
 import {responsiveHeight} from 'react-native-responsive-dimensions';
 
 type PreviewInvoiceNavigationProp = StackNavigationProp<

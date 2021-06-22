@@ -12,16 +12,15 @@ export async function signIn({
 }: SignInData): Promise<JwtToken> {
   try {
     const result = await axios.post<JwtToken>(
-      'http://192.168.0.101:7000/auth/sign-in',
+      'http://192.168.0.102:7000/auth/sign-in',
       {
         emailAddress: email,
         password,
       },
     );
-
-    return result.data;
+    return result?.data;
   } catch (error) {
-    throw error.response.data;
+    throw error.response?.data;
   }
 }
 
@@ -89,6 +88,6 @@ export async function resetPassword(
       },
     );
   } catch (error) {
-    throw error.response.data;
+    throw error.response?.data;
   }
 }

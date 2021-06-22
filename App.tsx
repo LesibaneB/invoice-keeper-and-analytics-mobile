@@ -14,6 +14,7 @@ import { getValueFor } from './src/secure-store/secure-store';
 import { AUTH_TOKEN_KEY } from './src/utils/consts';
 import { observer } from 'mobx-react';
 import UserStore from './src/store/user';
+import { JwtToken } from './src/models/JwtToken';
 
 export type RootStackParamList = {
   Main: undefined;
@@ -38,8 +39,9 @@ const App = (): JSX.Element => {
     const getStoredToken = async () => {
       const stringifiedToken = await getValueFor(AUTH_TOKEN_KEY);
       if (stringifiedToken) {
-        const jsonToken = JSON.parse(stringifiedToken);
+        const jsonToken: JwtToken = JSON.parse(stringifiedToken);
         userStore.setIsSignedIn(true);
+        userStore.setToken(jsonToken);
       }
     };
 
@@ -53,7 +55,8 @@ const App = (): JSX.Element => {
           <Stack.Navigator initialRouteName="Main">
             <Stack.Screen
               options={{
-                headerShown: false,
+                headerTitle: 'Invoices',
+                headerTitleAlign: 'center',
               }}
               name="Main"
               component={Main}
