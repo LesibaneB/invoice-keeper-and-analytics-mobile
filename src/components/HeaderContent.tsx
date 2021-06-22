@@ -1,6 +1,6 @@
-import { Icon, View } from 'native-base';
+import { Icon } from 'native-base';
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import {
   responsiveFontSize,
   responsiveWidth,
@@ -11,17 +11,17 @@ interface Props {
   onOpenMenu: () => void;
 }
 
-export function HeaderContent(props: Props): JSX.Element {
+export function HeaderContent({ onSearch, onOpenMenu }: Props): JSX.Element {
   return (
     <View style={styles.container}>
       <Icon
-        onPress={props.onSearch}
+        onPress={onSearch}
         name="search"
         style={styles.searchIcon}
         type="MaterialIcons"
       />
       <Icon
-        onPress={props.onOpenMenu}
+        onPress={onOpenMenu}
         name="menu"
         style={styles.menuIcon}
         type="MaterialIcons"
